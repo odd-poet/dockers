@@ -39,6 +39,6 @@ RUN bash setup.sh
 #=======================
 COPY start.sh start.sh
 EXPOSE 50070 60010 60050 9090 2181
-CMD ["/bin/bash", "-e", "start.sh"]
+CMD ["/bin/bash", "start.sh"]
 
 

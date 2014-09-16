@@ -2,8 +2,8 @@
 echo "-----------------------------"
 echo " set bashrc"
 echo "-----------------------------"
-echo "export JAVA_HOME=/usr/java/default" >> /etc/bashrc
-echo "export PATH=\$PATH:\$JAVA_HOME/bin" >> /etc/bashrc
+echo "export JAVA_HOME=/usr/java/default" >> ~/.bashrc
+echo "export PATH=\$PATH:\$JAVA_HOME/bin" >> ~/.bashrc
 
 echo "-----------------------------"
 echo " Remove limit"
