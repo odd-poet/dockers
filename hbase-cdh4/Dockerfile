@@ -3,40 +3,24 @@ FROM centos:centos6
 MAINTAINER Yunsang Choi <oddpoet@gmail.com>
 
 #=======================
-# Install JDK6 
+# Install utils
 #=======================
-RUN yum clean all
-RUN "yum install -y wget sudo"
-RUN wget --no-cookies --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-x64-rpm.bin --no-check-certificate -O ./jdk-6u45-linux-x64-rpm.bin
-RUN chmod +x jdk-6u45-linux-x64-rpm.bin
-RUN ./jdk-6u45-linux-x64-rpm.bin
-RUN rm jdk-6u45-linux-x64-rpm.bin
-RUN rm sun*.rpm
-RUN rm jdk*.rpm
+COPY install-default.sh install-default.sh 
+RUN ["/bin/bash", "install-default.sh"]
 
-RUN echo "export JAVA_HOME=/usr/java/default" >> ~/.bashrc 
-RUN echo "export PATH=\$PATH:\$JAVA_HOME/bin" >> ~/.bashrc
-
-RUN java -version 
-
+#=======================
+# Install JDK6
+#=======================
+COPY install-jdk6.sh install-jdk6.sh 
+RUN ["/bin/bash", "install-jdk6.sh"]
 
 #=======================
 # Install CDH 4
 #=======================
 # ref : http://www.cloudera.com/content/cloudera-content/cloudera-docs/CDH4/4.2.0/CDH4-Quick-Start/cdh4qs_topic_3_2.html
 
-RUN wget http://archive.cloudera.com/cdh4/one-click-install/redhat/6/x86_64/cloudera-cdh-4-0.x86_64.rpm
-RUN yum -y --nogpgcheck localinstall cloudera-cdh-4-0.x86_64.rpm
-RUN rpm --import http://archive.cloudera.com/cdh4/redhat/6/x86_64/cdh/RPM-GPG-KEY-cloudera 
-
-RUN yum install -y hadoop-0.20-conf-pseudo
-
-#=======================
-# Install HBase
-#=======================
-# ref : http://www.cloudera.com/content/cloudera-content/cloudera-docs/CDH4/4.2.0/CDH4-Installation-Guide/cdh4ig_topic_20.html
-RUN yum install -y hbase hbase-master hbase-regionserver zookeeper zookeeper-server 
-
+COPY install-cdh4-hbase.sh install-cdh4-hbase.sh
+RUN ["/bin/bash", "install-cdh4-hbase.sh"]
 
 #=======================
 # Setup 
