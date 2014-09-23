@@ -10,7 +10,7 @@ rpm --import http://archive.cloudera.com/cdh4/redhat/6/x86_64/cdh/RPM-GPG-KEY-cl
 
 yum install -y \
 	hadoop-0.20-conf-pseudo \
-	hbase hbase-master \ 
+	hbase hbase-master \
 	hbase-regionserver \
-	zookeeper zookeeper-server 
+	zookeeper zookeeper-server
 
