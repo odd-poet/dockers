@@ -6,7 +6,7 @@ MAINTAINER Yunsang Choi <oddpoet@gmail.com>
 # Install JDK6 
 #=======================
 RUN yum clean all
-RUN yum install -y wget sudo
+RUN "yum install -y wget sudo"
 RUN wget --no-cookies --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jdk-6u45-linux-x64-rpm.bin --no-check-certificate -O ./jdk-6u45-linux-x64-rpm.bin
 RUN chmod +x jdk-6u45-linux-x64-rpm.bin
 RUN ./jdk-6u45-linux-x64-rpm.bin
