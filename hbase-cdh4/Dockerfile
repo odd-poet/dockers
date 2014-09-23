@@ -21,10 +21,9 @@ RUN java -version
 
 
 #=======================
-# Install CDH 4.2
+# Install CDH 4
 #=======================
 # ref : http://www.cloudera.com/content/cloudera-content/cloudera-docs/CDH4/4.2.0/CDH4-Quick-Start/cdh4qs_topic_3_2.html
-
 
 RUN wget http://archive.cloudera.com/cdh4/one-click-install/redhat/6/x86_64/cloudera-cdh-4-0.x86_64.rpm
 RUN yum -y --nogpgcheck localinstall cloudera-cdh-4-0.x86_64.rpm
@@ -33,19 +32,34 @@ RUN rpm --import http://archive.cloudera.com/cdh4/redhat/6/x86_64/cdh/RPM-GPG-KE
 RUN yum install -y hadoop-0.20-conf-pseudo
 
 #=======================
-# Configure HBase pseduo-distributed
+# Install HBase
 #=======================
+# ref : http://www.cloudera.com/content/cloudera-content/cloudera-docs/CDH4/4.2.0/CDH4-Installation-Guide/cdh4ig_topic_20.html
+RUN yum install -y hbase hbase-master hbase-regionserver zookeeper zookeeper-server 
 
-#COPY setup.sh setup.sh
-#COPY hbase-site.xml /etc/hbase/conf/hbase-site.xml 
-#COPY core-site.xml /etc/hadoop/conf/core-site.xml
-#RUN bash setup.sh
+
+#=======================
+# Setup 
+#=======================
+COPY hbase-site.xml /etc/hbase/conf/hbase-site.xml
+COPY core-site.xml /etc/hadoop/conf/core-site.xml
+COPY setup.sh setup.sh
+RUN bash setup.sh 
 
 #=======================
 # Start services.
 #=======================
-#COPY start.sh start.sh
-#EXPOSE 50070 60010 60050 9090 2181
-#CMD ["/bin/bash", "start.sh"]
+COPY start.sh start.sh
+# zookeeper
+EXPOSE 2181
+# HBase master
+EXPOSE 60000
+# HBase master web UI
+EXPOSE 60010
+# HBase regionserver
+EXPOSE 60020
+# HBase regionserver web UI
+EXPOSE 60030
+CMD ["/bin/bash", "start.sh"]
 
 

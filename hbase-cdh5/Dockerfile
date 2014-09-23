@@ -38,7 +38,16 @@ RUN bash setup.sh
 # Start services.
 #=======================
 COPY start.sh start.sh
-EXPOSE 50070 60010 60050 9090 2181
+# zookeeper
+EXPOSE 2181
+# HBase master
+EXPOSE 60000
+# HBase master web UI
+EXPOSE 60010
+# HBase regionserver
+EXPOSE 60020
+# HBase regionserver web UI
+EXPOSE 60030
 CMD ["/bin/bash", "start.sh"]
 
 
