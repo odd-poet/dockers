@@ -37,13 +37,13 @@ COPY start.sh start.sh
 # zookeeper
 EXPOSE 2181
 # HBase master
-EXPOSE 60000
+EXPOSE 65000
 # HBase master web UI
-EXPOSE 60010
+EXPOSE 65010
 # HBase regionserver
-EXPOSE 60020
+EXPOSE 65020
 # HBase regionserver web UI
-EXPOSE 60030
+EXPOSE 65030
 CMD ["/bin/bash", "start.sh"]
 
 
