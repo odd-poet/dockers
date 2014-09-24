@@ -22,12 +22,28 @@
  */
 -->
 <configuration>
-  <property>
-  <name>hbase.cluster.distributed</name>
-  <value>true</value>
-</property>
-<property>
-  <name>hbase.rootdir</name>
-  <value>hdfs://localhost/hbase</value>
-</property>
+	<property>
+		<name>hbase.cluster.distributed</name>
+		<value>true</value>
+	</property>
+	<property>
+		<name>hbase.rootdir</name>
+		<value>hdfs://localhost/hbase</value>
+	</property>
+	<property>
+		<name>hbase.master.port</name>
+		<value>65000</value>
+	</property>
+	<property>
+		<name>hbase.master.info.port</name>
+		<value>65010</value>
+	</property>
+	<property>
+		<name>hbase.regionserver.port</name>
+		<value>65020</value>
+	</property>
+	<property>
+		<name>hbase.regionserver.info.port</name>
+		<value>65030</value>
+	</property>
 </configuration>

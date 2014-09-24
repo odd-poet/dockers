@@ -8,10 +8,10 @@ HBase docker image for dev pc.
 * HBase mode : pseudo distributed 
 * Exposed port 
 	* zookeeper-server: 2181
-	* hbase-master : 60000
-	* hbase-master web UI : 60010
-	* hbase-regionserver : 60020
-	* hbase-regionserver web UI: 60030
+	* hbase-master : 65000
+	* hbase-master web UI : 65010
+	* hbase-regionserver : 65020
+	* hbase-regionserver web UI: 65030
 
 
 How to Use
@@ -30,7 +30,7 @@ configure port forwarding for boot2docker.
 boot2docker init
 boot2docker down 
 
-declare PORTS=(2181 60000 60010 60020 60030)
+declare PORTS=(2181 65000 65010 65020 65030)
 for i in ${PORTS[@]}; do 
 	echo "port forwarding : $i"
 	VBoxManage modifyvm "boot2docker-vm" --natpf1 "tcp-port$i,tcp,,$i,,$i";
@@ -41,7 +41,7 @@ boot2docker up
 $(boot2docker shellinit)
 ```
 
-* reference : [boot2docker port forwarding workarounds](https://github.com/boot2docker/boot2docker/blob/master/doc/WORKAROUNDS.md)
+* ref : [boot2docker port forwarding workarounds](https://github.com/boot2docker/boot2docker/blob/master/doc/WORKAROUNDS.md)
 
 
 Pull image 
@@ -55,14 +55,17 @@ Run container
 -------------
 
 ```
-docker run -p 2181:2181 -p 60000:60000 -p 60010:60010 -p 60020:60020 -p 60030:60030 -h $(hostname) -d oddpoet/hbase-cdh5
+docker run -p 2181:2181 -p 65000:65000 -p 65010:65010 -p 65020:65020 -p 65030:65030 -h $(hostname) -d oddpoet/hbase-cdh5
 ```
 
 
 Check HBase
 -----------
 
-open [http://localhost:60010/](http://localhost:60010/) on your browser. 
+open [http://localhost:65010/](http://localhost:65010/) on your browser. 
+
+
+
 
 
 
