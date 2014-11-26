@@ -19,7 +19,7 @@ RUN ["/bin/bash", "install-jdk7.sh"]
 # Install CDH 5.1 + HBase
 #=======================
 # ref : http://www.cloudera.com/content/cloudera-content/cloudera-docs/CDH5/latest/CDH5-Quick-Start/cdh5qs_yarn_pseudo.html
-COPY install-cdh5-hbase.sh install-cdh5-hbase.sh
+COPY install-cdh5-hbase.sh install-cdh5.2-hbase.sh
 RUN ["/bin/bash", "install-cdh5.2-hbase.sh"]
 
 #=======================
