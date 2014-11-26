@@ -1,0 +1,44 @@
+zookeeper:
+  image: d9e09c947339
+  hostname: bifrost-infra.box
+  command:
+    - "2181"
+  ports:
+    - 2181:2181
+# mesos:
+#   image: bbcf10ac77c5
+#   hostname: bifrost-infra.box
+#   command:
+#     - mesos
+#     - "zk://zookeeper:2181/mesos"
+#     - "5050"
+#   ports:
+#     - 5050:5050
+#     - 5051:5051
+#   links:
+#     - zookeeper:zookeeper
+# chronos:
+#   image: bbcf10ac77c5
+#   hostname: bifrost-infra.box
+#   command:
+#     - chronos
+#     - "zk://zookeeper:2181/mesos"
+#     - "8081"
+#   ports:
+#     - 8081:8081
+#   links:
+#     - zookeeper:zookeeper
+#     - mesos:mesos
+hmaster:
+   image: 1c9eee012a37
+   hostname: bifrost-infra.box
+   command:
+     - master
+     - "zookeeper:2181"
+   ports:
+     - 65000:65000
+     - 65010:65010
+     - 65020:65020
+     - 65030:65030
+   links:
+     - zookeeper:zookeeper

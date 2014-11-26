@@ -1,12 +1,22 @@
 #!/bin/sh
 
-service hadoop-hdfs-datanode start
-service hadoop-hdfs-namenode start 
+ZK=$1
 
-service zookeeper-server start
+if [[ "$ZK" == "" ]]; then 
+	echo "you should set zookeeper quorum."
+	exit 1
+fi
 
-service hbase-master start
-service hbase-regionserver start
+sed -i -r "s|#ZOOKEEPER#|$ZK|" /etc/hbase/conf/hbase-site.xml 
+
+echo "Start hadoop..."
+for x in `cd /etc/init.d ; ls hadoop-hdfs-*` ; do 
+	service $x start &
+done
+
+echo "Start master & regionserver"
+service hbase-master start &
+service hbase-regionserver start &
 
 # infinite loop
 while :; do sleep 5; done

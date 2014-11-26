@@ -2,29 +2,24 @@
 FROM oddpoet/jdk7
 MAINTAINER Yunsang Choi <oddpoet@gmail.com>
 
-ENV CDH_VER 5.2.0
-
 #=======================
-# Install HBase
+# Install zookeeper
 #=======================
 # ref : http://www.cloudera.com/content/cloudera-content/cloudera-docs/CDH5/latest/CDH5-Quick-Start/cdh5qs_yarn_pseudo.html
 RUN curl http://archive.cloudera.com/cdh5/redhat/6/x86_64/cdh/cloudera-cdh5.repo -o /etc/yum.repos.d/cloudera-cdh5.repo
-RUN sed -i "s|cdh/5/|cdh/${CDH_VER}/|" /etc/yum.repos.d/cloudera-cdh5.repo
-RUN yum install -y hadoop-conf-pseudo hbase hbase-master hbase-regionserver
-
+RUN sed -i 's|cdh/5/|cdh/5.2.0/|' /etc/yum.repos.d/cloudera-cdh5.repo
+RUN yum install -y zookeeper zookeeper-server
 
 #=======================
-# Configure HBase pseduo-distributed
+# Setup zookeeper
 #=======================
-COPY setup.sh setup.sh
-RUN ["/bin/bash", "setup.sh"]
+RUN mkdir -p /var/lib/zookeeper
+RUN chown -R zookeeper /var/lib/zookeeper/
+RUN service zookeeper-server init
 
 #=======================
 # Start services.
 #=======================
-COPY hbase-site.xml /etc/hbase/conf/hbase-site.xml 
-COPY core-site.xml /etc/hadoop/conf/core-site.xml
-
 COPY start.sh start.sh
 ENTRYPOINT ["/bin/bash", "start.sh"]
-CMD []
+CMD ["2181"]

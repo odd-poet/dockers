@@ -29,13 +29,6 @@ su hdfs -c "hadoop fs -chown yarn:mapred /var/log/hadoop-yarn"
 su hdfs -c "hadoop fs -ls -R /"
 
 echo "-----------------------------"
-echo "Setup Zookeeper"
-echo "-----------------------------"
-mkdir -p /var/lib/zookeeper
-chown -R zookeeper /var/lib/zookeeper/
-service zookeeper-server init
-
-echo "-----------------------------"
 echo "Setup HBase"
 echo "-----------------------------"
 
@@ -47,11 +40,9 @@ service hbase-regionserver stop
 su hdfs -c "hadoop fs -mkdir /hbase"
 su hdfs -c "hadoop fs -chown hbase /hbase"
 
-
 echo "-----------------------------"
 echo "Cleanup"
 echo "-----------------------------"
 for x in `cd /etc/init.d ; ls hadoop-hdfs-*` ; do service $x stop ; done
-service zookeeper-server stop
 service hbase-master stop
 service hbase-regionserver stop

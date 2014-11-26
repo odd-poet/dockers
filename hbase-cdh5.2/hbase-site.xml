@@ -31,6 +31,10 @@
 		<value>hdfs://localhost/hbase</value>
 	</property>
 	<property>
+		<name>hbase.zookeeper.quorum</name>
+		<value>#ZOOKEEPER#</value>
+	</property>
+	<property>
 		<name>hbase.master.port</name>
 		<value>65000</value>
 	</property>
@@ -38,6 +42,7 @@
 		<name>hbase.master.info.port</name>
 		<value>65010</value>
 	</property>
+
 	<property>
 		<name>hbase.regionserver.port</name>
 		<value>65020</value>
