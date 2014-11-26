@@ -45,6 +45,6 @@ EXPOSE 65010
 EXPOSE 65020
 # HBase regionserver web UI
 EXPOSE 65030
-CMD ["/bin/bash", "start.sh"]
+ENTRYPOINT ["/bin/bash", "start.sh"]
 
 

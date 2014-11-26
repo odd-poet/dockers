@@ -9,4 +9,4 @@ service hbase-master start
 service hbase-regionserver start
 
 # infinite loop
-while :; do echo "Running Hbase ..."; sleep 5; done
+while :; do sleep 5; done
