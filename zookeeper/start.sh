@@ -7,26 +7,37 @@ echo "            Zookeeper Server (3.4.5+cdh5.2.0)"
 echo "###########################################################"
 echo 
 exit_with_usage() {
-	echo "Usage: docker run ${DOCKER_NAME} port=PORT"
-	echo " example: docker run \\"
+	echo "Usage: docker run DOCKER_OPTIONS ${DOCKER_NAME} OPTIONS"
+	echo 
+	echo "Options:"
+	echo "  -p,  --port=2181     zookeeper service port"
+	echo "  --help               help"
+	echo 
+	echo "Example: "
+	echo "    docker run \\"
 	echo "         -p 2181:2181 \\"
 	echo "         -h zk-server \\"
 	echo "         -d --name=\"zookeeper\"\\"
-	echo "         ${DOCKER_NAME} port=2181"
+	echo "         ${DOCKER_NAME} -p 2181"
 	exit 1
 }
 
-if [[ $# -ne 1 ]]; then 
-	exit_with_usage
-fi
-
-for i in "$@"; do 
-	case $i in 
-		port=*)
-			port=${i#*=}
+# parse option
+while [[ $# > 0 ]];do 
+	arg="$1"
+	shift
+	case $arg in 
+		--port=*)
+			port=${arg#*=}
+			;;
+		-p)
+			port=$1
 			shift
 			;;
 		-h|--help)
+			exit_with_usage
+			;;
+		*)
 			exit_with_usage
 			;;
 	esac
