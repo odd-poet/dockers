@@ -43,6 +43,15 @@ while [[ $# > 0 ]];do
 	esac
 done
 
+# check 
+port=${port:-2181}  # default
+if [[ ! ("$port" =~ (^[0-9]+)) ]];then 
+	echo "> wrong port format: $port"
+	echo 
+	exit_with_usage
+fi
+
+
 echo "* starting zookeeper "
 echo "* port : $port"
 echo 
