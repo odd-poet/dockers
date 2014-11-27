@@ -8,76 +8,82 @@ echo "###########################################################"
 echo 
 
 exit_with_usage() {
-	echo "Usage: docker run ${DOCKER_NAME} [master|slave] port=PORT zk=ZK_URL"
-	echo " example: docker run \\"
-	echo "         -p 5050:5050 \\"
-	echo "         -h mesos-master \\"
-	echo "         -d --name=\"mesos-master\"\\"
-	echo "         ${DOCKER_NAME} port=5050 zk=zk://zk-server/mesos"
+	echo "Usage: docker run ${DOCKER_NAME} OPTIONS"
+	echo 
+	echo "Options:"
+	echo "  -p,  --port=5050                   master port"
+	echo "       --slave-port=5051             slave port"
+	echo "  --zk=zk://zk-server:2181/mesos     zookeper url"
+	echo "  --help                             help message"
+	echo 
+	echo "Example: "
+	echo "    docker run \\"
+	echo "         -d -p 5050 -h mesos\\"
+	echo "         ${DOCKER_NAME} -p 5050"
 	exit 1
 }
 
-service=$1
-shift
-# parsing args.
-for i in "$@"; do 
-	case $i in 
-		port=*)
-			port=${i#*=}
+# parse option
+while [[ $# > 0 ]];do 
+	arg="$1"
+	shift
+	case $arg in 
+		--zk=*)
+			zk=${arg#*=}
+			;;
+		--port=*)
+			port=${arg#*=}
+			;;
+		-p)
+			port=$1
 			shift
 			;;
-		zk=*)
-			zk=${i#*=}
-			shift
+		--slave-port=*)
+			slave_port=${arg#*=}
 			;;
 		-h|--help)
 			exit_with_usage
 			;;
 		*)
-			echo "Wrong argument: $1"
-			echo 
 			exit_with_usage
 			;;
 	esac
 done
 
-if [[ "$service" == "master" ]];then 
-	port=${port:-5050}
-elif [[ "$service" == "slave" ]];then 
-	port=${port:-5051}
-else 
-	echo "Wrong service : $service"
+if [[ ! ("$port" =~ (^[0-9]+$)) ]];then 
+	echo "> wrong port : $port"
 	echo 
 	exit_with_usage
 fi
 
-if [[ ! ("$port" =~ (^[0-9]+$)) ]];then 
-	echo "Wrong port : $port"
+if [[ ! ("$slave_port" =~ (^[0-9]+$)) ]];then 
+	echo "> wrong slave port : $port"
+	echo 
+	exit_with_usage
 fi
+
 
 if [[ ! ("$zk" =~ (zk\://.+/.+)) ]];then 
-	echo "Wrong zookeeper : $zk"
+	echo "> wrong zookeeper url : $zk"
 	echo 
 	exit_with_usage
 fi
 
-echo "* starting mesos-$service "
-echo "* port : $port"
+echo "* starting mesos (master & slave) "
+echo "* master port : $port"
+echo "* slave port : $slave_port"
 echo "* zookeeper : $zk"
 
 # set zk.
 echo $zk > /etc/mesos/zk 
-case "$service" in 
-	master)
-		sed -r -i "s|PORT=[0-9]+|PORT=$port|" /etc/default/mesos-master
-		mesos-init-wrapper master
-		;;
-	slave)
-		echo "$port" > /etc/mesos-slave/port
-		mesos-init-wrapper slave
-		;;
-	*)
-		exit 1
-		;;
-esac
 
+# start master 
+sed -r -i "s|PORT=[0-9]+|PORT=$port|" /etc/default/mesos-master
+mesos-init-wrapper master &
+
+#start slave 
+echo "$slave_port" > /etc/mesos-slave/port
+mesos-init-wrapper slave &
+
+# infinite loop
+while :; do sleep 5; done
