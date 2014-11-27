@@ -2,8 +2,6 @@
 FROM centos:centos6
 MAINTAINER Yunsang Choi <oddpoet@gmail.com>
 
-ENV JDK_RPM jdk-7u71-linux-x64.rpm
-
 #=======================
 # Install utils
 #=======================
