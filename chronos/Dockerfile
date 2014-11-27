@@ -1,12 +1,6 @@
 
-FROM oddpoet/jdk7
+FROM oddpoet/mesos
 MAINTAINER Yunsang Choi <oddpoet@gmail.com>
-
-#=======================
-# Install mesos
-#=======================
-RUN rpm -Uvh http://repos.mesosphere.io/el/6/noarch/RPMS/mesosphere-el-repo-6-2.noarch.rpm
-RUN yum install -y mesos
 
 #=======================
 # Install chronos
@@ -20,6 +14,4 @@ RUN tar xzf chronos.tgz
 # Start services.
 #=======================
 COPY start.sh start.sh
-
 ENTRYPOINT ["/bin/bash", "start.sh"]
-CMD []

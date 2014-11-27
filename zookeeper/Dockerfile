@@ -1,5 +1,5 @@
 
-FROM oddpoet/jdk7
+FROM oddpoet/centos:jdk7
 MAINTAINER Yunsang Choi <oddpoet@gmail.com>
 
 #=======================
@@ -22,4 +22,3 @@ RUN service zookeeper-server init
 #=======================
 COPY start.sh start.sh
 ENTRYPOINT ["/bin/bash", "start.sh"]
-CMD ["2181"]

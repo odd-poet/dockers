@@ -8,7 +8,7 @@ ENV JDK_RPM jdk-7u71-linux-x64.rpm
 # Install utils
 #=======================
 RUN yum clean all
-RUN yum install -y curl wget telnet 
+RUN yum install -y curl wget tar telnet 
 
 #=======================
 # Install JDK7 
