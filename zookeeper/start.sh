@@ -12,6 +12,7 @@ exit_with_usage() {
 	echo "Options:"
 	echo "  -p,  --port=2181     zookeeper service port"
 	echo "  --help               help"
+	echo "  shell                get a shell in container. You should run docker with '-it' options."
 	echo 
 	echo "Example: "
 	echo "    docker run \\"
@@ -36,6 +37,10 @@ while [[ $# > 0 ]];do
 			;;
 		-h|--help)
 			exit_with_usage
+			;;
+		shell)
+			/bin/bash
+			exit 0;
 			;;
 		*)
 			exit_with_usage

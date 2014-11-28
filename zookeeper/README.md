@@ -19,6 +19,7 @@ Usage: docker run DOCKER_OPTIONS oddpoet/zookeeper OPTIONS
 Options:
   -p,  --port=2181     zookeeper service port
   --help               help
+  shell                get a shell in container. You should run docker with '-it' options.
 
 Example:
     docker run \
