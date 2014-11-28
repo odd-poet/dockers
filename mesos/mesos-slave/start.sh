@@ -14,6 +14,7 @@ exit_with_usage() {
 	echo "  -p,  --port=5051                   mesos slave port"
 	echo "  --zk=zk://localhost:2181/mesos     zookeper url. If you use default value, local zookeeper-server will be run and mesos will use it."
 	echo "  -h, --help                         help message"
+	echo "  shell                              get a shell in container. You should run docker with '-it' options."
 	echo 
 	echo "Example: "
 	echo "    docker run \\"
@@ -36,6 +37,10 @@ while [[ $# > 0 ]];do
 		-p)
 			port=$1
 			shift
+			;;
+		shell)
+			/bin/bash
+			exit 0;
 			;;
 		--help)
 			exit_with_usage

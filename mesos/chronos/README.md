@@ -23,6 +23,7 @@ Options:
   --zk-hosts=localhost:2181              zookeeper servers for storing state. If you use default value, local zookeeper-server will be run and mesos will use it.
   --zk-path=/chronos/state               path in zookeeper for storing state
   --help                                 help message
+  shell                              get a shell in container
 
 Example:
     docker run \

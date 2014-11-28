@@ -18,6 +18,7 @@ Options:
   -p,  --port=5050                   mesos master port
   --zk=zk://localhost:2181/mesos     zookeper url. If you use default value, local zookeeper-server will be run and mesos will use it.
   -h,  --help                        help message
+  shell                              get a shell in container
 
 Example:
     docker run \

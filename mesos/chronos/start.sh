@@ -15,6 +15,7 @@ exit_with_usage() {
 	echo "  --zk-hosts=localhost:2181              zookeeper servers for storing state. If you use default value, local zookeeper-server will be run and mesos will use it. "
 	echo "  --zk-path=/chronos/state               path in zookeeper for storing state"
 	echo "  --help                                 help message"
+	echo "  shell                                  get a shell in container. You should run docker with '-it' options."
 	echo 
 	echo "Example: "
 	echo "    docker run \\"
@@ -48,6 +49,10 @@ while [[ $# > 0 ]];do
 			;;
 		--help)
 			exit_with_usage
+			;;
+		shell)
+			/bin/bash
+			exit 0;
 			;;
 		*)
 			exit_with_usage
@@ -85,9 +90,6 @@ if [[ "$zk_hosts" == $DEFAULT_ZK_HOSTS || "$master" == $DEFAULT_MASTER ]];then
 	service zookeeper-server start
 fi
 
-/chronos/bin/start-chronos.bash \ 
-	--http_port $port
-	--master $master \
-	--zk_hosts $zk_hosts \
-	--zk_path $zk_path
+/chronos/bin/start-chronos.bash --http_port $port --master $master --zk_hosts $zk_hosts --zk_path $zk_path 
+
 

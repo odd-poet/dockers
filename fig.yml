@@ -27,14 +27,14 @@ mesos2:
       - "5052:5052"
    links:
       - mesos0:zk-server
-# chronos:
-#   image: oddpoet/chronos
-#   hostname: chronos 
-#   command:
-#     - "chronos"
-#     - "zk://zk-server:2181/mesos"
-#     - "8081"
-#   ports:
-#     - "8081:8081"
-#   links:
-#     - zookeeper:zk-server
+chronos:
+  image: oddpoet/chronos
+  hostname: chronos 
+  command:
+    - "--master=zk://zk-server:2181/mesos"
+    - "--zk-hosts=zk-server:2181"
+    - "--port=8081"
+  ports:
+    - "8081:8081"
+  links:
+    - mesos0:zk-server
