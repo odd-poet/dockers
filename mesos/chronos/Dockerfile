@@ -1,5 +1,5 @@
 
-FROM 9e1e1dd370e9
+FROM oddpoet/mesos
 MAINTAINER Yunsang Choi <oddpoet@gmail.com>
 
 #=======================

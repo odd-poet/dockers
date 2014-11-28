@@ -7,7 +7,7 @@ echo "            Zookeeper Server (3.4.5+cdh5.2.0)"
 echo "###########################################################"
 echo 
 exit_with_usage() {
-	echo "Usage: docker run DOCKER_OPTIONS ${DOCKER_NAME} OPTIONS"
+	echo "Usage: docker run DOCKER_OPTS ${DOCKER_NAME} OPTIONS"
 	echo 
 	echo "Options:"
 	echo "  -p,  --port=2181     zookeeper service port"
@@ -43,8 +43,10 @@ while [[ $# > 0 ]];do
 	esac
 done
 
+# default
+port=${port:-2181}
+
 # check 
-port=${port:-2181}  # default
 if [[ ! ("$port" =~ (^[0-9]+)) ]];then 
 	echo "> wrong port format: $port"
 	echo 

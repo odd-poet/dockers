@@ -1,24 +1,23 @@
 #!/bin/sh
 
-DOCKER_NAME="oddpoet/mesos"
+DOCKER_NAME="oddpoet/mesos-master"
 
 echo "###########################################################"
-echo "            Mesos Server (0.21.0)"
+echo "                    Mesos-Master"
 echo "###########################################################"
 echo 
 
 exit_with_usage() {
-	echo "Usage: docker run ${DOCKER_NAME} OPTIONS"
+	echo "Usage: docker run DOCKER_OPTS ${DOCKER_NAME} OPTIONS"
 	echo 
 	echo "Options:"
-	echo "  -p,  --port=5050                   master port"
-	echo "       --slave-port=5051             slave port"
+	echo "  -p,  --port=5050                   mesos master port"
 	echo "  --zk=zk://zk-server:2181/mesos     zookeper url"
 	echo "  --help                             help message"
 	echo 
 	echo "Example: "
 	echo "    docker run \\"
-	echo "         -d -p 5050 -h mesos\\"
+	echo "         -d -p 5050:5050 -h mesos-master \\"
 	echo "         ${DOCKER_NAME} -p 5050"
 	exit 1
 }
@@ -38,10 +37,7 @@ while [[ $# > 0 ]];do
 			port=$1
 			shift
 			;;
-		--slave-port=*)
-			slave_port=${arg#*=}
-			;;
-		-h|--help)
+		--help)
 			exit_with_usage
 			;;
 		*)
@@ -50,18 +46,16 @@ while [[ $# > 0 ]];do
 	esac
 done
 
+# default 
+port=${port:-5050}
+zk=${zk:-"zk://zk-server:2181/mesos"}
+
+# check
 if [[ ! ("$port" =~ (^[0-9]+$)) ]];then 
 	echo "> wrong port : $port"
 	echo 
 	exit_with_usage
 fi
-
-if [[ ! ("$slave_port" =~ (^[0-9]+$)) ]];then 
-	echo "> wrong slave port : $port"
-	echo 
-	exit_with_usage
-fi
-
 
 if [[ ! ("$zk" =~ (zk\://.+/.+)) ]];then 
 	echo "> wrong zookeeper url : $zk"
@@ -69,9 +63,8 @@ if [[ ! ("$zk" =~ (zk\://.+/.+)) ]];then
 	exit_with_usage
 fi
 
-echo "* starting mesos (master & slave) "
-echo "* master port : $port"
-echo "* slave port : $slave_port"
+echo "* starting mesos-master"
+echo "* port : $port"
 echo "* zookeeper : $zk"
 
 # set zk.
@@ -79,11 +72,5 @@ echo $zk > /etc/mesos/zk
 
 # start master 
 sed -r -i "s|PORT=[0-9]+|PORT=$port|" /etc/default/mesos-master
-mesos-init-wrapper master &
+mesos-init-wrapper master
 
-#start slave 
-echo "$slave_port" > /etc/mesos-slave/port
-mesos-init-wrapper slave &
-
-# infinite loop
-while :; do sleep 5; done

@@ -9,8 +9,3 @@ RUN rpm -Uvh http://repos.mesosphere.io/el/6/noarch/RPMS/mesosphere-el-repo-6-2.
 RUN yum install -y mesos
 RUN yum clean all
 
-#=======================
-# Start services.
-#=======================
-COPY start.sh start.sh
-ENTRYPOINT ["/bin/bash", "start.sh"]
