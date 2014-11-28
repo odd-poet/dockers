@@ -2,6 +2,9 @@
 
 DOCKER_NAME="oddpoet/mesos-master"
 
+
+DEFAULT_ZK="zk://localhost:2181/mesos"
+
 echo "###########################################################"
 echo "                    Mesos-Master"
 echo "###########################################################"
@@ -12,7 +15,7 @@ exit_with_usage() {
 	echo 
 	echo "Options:"
 	echo "  -p,  --port=5050                   mesos master port"
-	echo "  --zk=zk://zk-server:2181/mesos     zookeper url"
+	echo "  --zk=zk://localhost:2181/mesos     zookeper url"
 	echo "  --help                             help message"
 	echo 
 	echo "Example: "
@@ -48,7 +51,7 @@ done
 
 # default 
 port=${port:-5050}
-zk=${zk:-"zk://zk-server:2181/mesos"}
+zk=${zk:-$DEFAULT_ZK}
 
 # check
 if [[ ! ("$port" =~ (^[0-9]+$)) ]];then 
@@ -66,8 +69,16 @@ fi
 echo "* starting mesos-master"
 echo "* port : $port"
 echo "* zookeeper : $zk"
+echo 
 
-# set zk.
+# use local zk
+if [[ "$zk" == $DEFAULT_ZK ]];then 
+	echo "* starting zookeeper ..."
+	echo
+	service zookeeper-server start
+fi
+
+# set zk for mesos
 echo $zk > /etc/mesos/zk 
 
 # start master 

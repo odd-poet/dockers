@@ -2,6 +2,7 @@
 
 DOCKER_NAME="oddpoet/mesos-slave"
 
+DEFAULT_ZK="zk://localhost:2181/mesos"
 echo "###########################################################"
 echo "                    Mesos-Slave"
 echo "###########################################################"
@@ -12,7 +13,7 @@ exit_with_usage() {
 	echo 
 	echo "Options:"
 	echo "  -p,  --port=5051                   mesos slave port"
-	echo "  --zk=zk://zk-server:2181/mesos     zookeper url"
+	echo "  --zk=zk://localhost:2181/mesos     zookeper url"
 	echo "  --help                             help message"
 	echo 
 	echo "Example: "
@@ -67,7 +68,15 @@ echo "* starting mesos (slave) "
 echo "* port : $port"
 echo "* zookeeper : $zk"
 
-# set zk.
+# use local zk
+if [[ "$zk" == $DEFAULT_ZK ]];then 
+	echo "* starting zookeeper ..."
+	echo
+	service zookeeper-server start
+fi
+
+
+# set zk for mesos
 echo $zk > /etc/mesos/zk 
 
 #start slave 

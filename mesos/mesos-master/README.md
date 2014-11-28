@@ -16,7 +16,7 @@ Usage: docker run DOCKER_OPTS oddpoet/mesos-master OPTIONS
 
 Options:
   -p,  --port=5050                   mesos master port
-  --zk=zk://zk-server:2181/mesos     zookeper url
+  --zk=zk://localhost:2181/mesos     zookeper url
   --help                             help message
 
 Example:

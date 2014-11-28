@@ -33,37 +33,29 @@ mesos0:
    image: oddpoet/mesos-master
    hostname: mesos-master
    command:
-      - "--zk=zk://zk-server:2181/mesos"
       - "--port=5050"
    ports: 
       - "5050:5050"
-   links:
-      - zookeeper:zk-server
+   expose:
+      - "2181:2181"
 mesos1:
    image: oddpoet/mesos-slave
    hostname: mesos-slave1
    command:
-      - "--zk=zk://zk-server:2181/mesos"
+      - "--zk=zk://zk-mesos:2181/mesos"
       - "--port=5051"
    ports: 
       - "5051:5051"
    links:
-      - zookeeper:zk-server
+      - mesos0:zk-mesos
 mesos2:
    image: oddpoet/mesos-slave
    hostname: mesos-slave2
    command:
-      - "--zk=zk://zk-server:2181/mesos"
+      - "--zk=zk://zk-mesos:2181/mesos"
       - "--port=5052"
    ports: 
       - "5052:5052"
    links:
-      - zookeeper:zk-server
-zookeeper:
-  image: oddpoet/zookeeper
-  hostname: zk-server
-  command:
-    - "--port=2181"
-  ports:
-    - "2181:2181"
+      - mesos0:zk-mesos
 ```
