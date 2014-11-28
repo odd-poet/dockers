@@ -1,5 +1,5 @@
 
-FROM oddpoet/centos6:jdk7
+FROM oddpoet/zookeeper
 MAINTAINER Yunsang Choi <oddpoet@gmail.com>
 
 #=======================
