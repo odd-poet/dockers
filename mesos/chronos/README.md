@@ -19,9 +19,9 @@ Usage: docker run DOCKER_OPTS oddpoet/chronos OPTIONS
 
 Options:
   -p,  --port=8080                       chronos web port
-  --master=zk://zk-server:2181/mesos     url of mesos master
-  --zk-hosts=zk-server:2181              zooKeeper servers for storing state
-  --zk-path=/chronos/state               path in zooKeeper for storing state
+  --master=zk://localhost:2181/mesos     url of mesos master. If you use default value, local zookeeper-server will be run and mesos will use it.
+  --zk-hosts=localhost:2181              zookeeper servers for storing state. If you use default value, local zookeeper-server will be run and mesos will use it.
+  --zk-path=/chronos/state               path in zookeeper for storing state
   --help                                 help message
 
 Example:

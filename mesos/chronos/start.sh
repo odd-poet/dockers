@@ -11,9 +11,9 @@ exit_with_usage() {
 	echo 
 	echo "Options:"
 	echo "  -p,  --port=8080                       chronos web port"
-	echo "  --master=zk://zk-server:2181/mesos     url of mesos master"
-	echo "  --zk-hosts=zk-server:2181              zooKeeper servers for storing state"
-	echo "  --zk-path=/chronos/state               path in zooKeeper for storing state"
+	echo "  --master=zk://localhost:2181/mesos     url of mesos master. If you use default value, local zookeeper-server will be run and mesos will use it. "
+	echo "  --zk-hosts=localhost:2181              zookeeper servers for storing state. If you use default value, local zookeeper-server will be run and mesos will use it. "
+	echo "  --zk-path=/chronos/state               path in zookeeper for storing state"
 	echo "  --help                                 help message"
 	echo 
 	echo "Example: "
@@ -56,9 +56,12 @@ while [[ $# > 0 ]];do
 done
 
 # default
+DEFAULT_MASTER="zk://localhost:2181/mesos"
+DEFAULT_ZK_HOSTS="localhost:2181"
+
 port=${port:-8080}
-master=${master:-"zk://zk-server:2181/mesos"}
-zk_hosts=${zk_hosts:-"zk-server:2181"}
+master=${master:-$DEFAULT_MASTER}
+zk_hosts=${zk_hosts:-$DEFAULT_ZK_HOSTS}
 zk_path=${zk_path:-"/chronos/state"}
 
 # check 
@@ -74,6 +77,13 @@ echo "* port : $port"
 echo "* master : $master"
 echo "* zk-hosts : $zk_hosts"
 echo "* zk-path : $zk_path"
+
+# use local zk
+if [[ "$zk_hosts" == $DEFAULT_ZK_HOSTS || "$master" == $DEFAULT_MASTER ]];then 
+	echo "* starting local zookeeper ..."
+	echo
+	service zookeeper-server start
+fi
 
 /chronos/bin/start-chronos.bash \ 
 	--http_port $port
